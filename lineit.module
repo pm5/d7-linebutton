@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function lineit_block_info() {
+  $blocks = array();
+  $blocks['lineit'] = array(
+    'info' => t('LINE it! button'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function lineit_block_view($delta = '') {
+  if ($delta == 'lineit') {
+    return array(
+      'content' => array(
+        '#markup' => '<span><script type="text/javascript" src="//media.line.me/js/line-button.js?v=20140411" ></script><script type="text/javascript">new media_line_me.LineButton({"pc":false,"lang":"en","type":"a"});</script></span>',
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function lineit_block_save($delta = '', $edit = array()) {
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function lineit_block_configure($delta = '') {
+}
+
+/**
+ * Implements hook_block_list_alter().
+ */
+function lineit_block_list_alter(&$blocks) {
+}
+
+/**
+ * Implements hook_block_info_alter().
+ */
+function lineit_block_info_alter(&$blocks, $theme, $code_blocks) {
+}
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function lineit_block_view_alter(&$data, $block) {
+}
