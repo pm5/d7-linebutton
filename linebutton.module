@@ -15,13 +15,17 @@ function linebutton_block_info() {
  * Implements hook_block_view().
  */
 function linebutton_block_view($delta = '') {
-  if ($delta == 'linebutton') {
-    return array(
-      'content' => array(
-        '#markup' => '<a href="http://line.me/R/msg/text/?LINE%20it%21%0d%0ahttp%3a%2f%2fline%2enaver%2ejp%2f"><img src="/' . drupal_get_path('module', 'linebutton') . '/linebutton_78x20_en.png" width="76" height="20" alt="LINE it!" /></a>',
-      ),
-    );
-  }
+  if ($delta !== 'linebutton') { return array(); }
+  if (arg(0) !== 'node' || !is_numeric(arg(1))) { return array(); }
+  $nid = arg(1);
+  $node = node_load($nid);
+  $linkURL = 'http://line.me/R/msg/text/?' . $node->title . ' ' . url('node/' . $node->nid, array('absolute' => TRUE));
+  $linkIcon = '<img src="/' . drupal_get_path('module', 'linebutton') . '/linebutton_75x30_en.png" width="75" height="30" alt="LINE 分享" />';
+  return array(
+    'content' => array(
+      '#markup' => l($linkIcon, $linkURL, array('html' => TRUE)),
+    ),
+  );
 }
 
 /**
