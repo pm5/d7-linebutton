@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function linebutton_block_info() {
+  $blocks = array();
+  $blocks['linebutton'] = array(
+    'info' => t('LINE it! button'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function linebutton_block_view($delta = '') {
+  if ($delta == 'linebutton') {
+    return array(
+      'content' => array(
+        '#markup' => '<a href="http://line.me/R/msg/text/?LINE%20it%21%0d%0ahttp%3a%2f%2fline%2enaver%2ejp%2f"><img src="/' . drupal_get_path('module', 'linebutton') . '/linebutton_78x20_en.png" width="76" height="20" alt="LINE it!" /></a>',
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function linebutton_block_save($delta = '', $edit = array()) {
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function linebutton_block_configure($delta = '') {
+}
+
+/**
+ * Implements hook_block_list_alter().
+ */
+function linebutton_block_list_alter(&$blocks) {
+}
+
+/**
+ * Implements hook_block_info_alter().
+ */
+function linebutton_block_info_alter(&$blocks, $theme, $code_blocks) {
+}
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function linebutton_block_view_alter(&$data, $block) {
+}
