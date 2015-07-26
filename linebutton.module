@@ -20,7 +20,7 @@ function linebutton_block_view($delta = '') {
   $nid = arg(1);
   $node = node_load($nid);
   $linkURL = 'http://line.me/R/msg/text/?' . $node->title . ' ' . url('node/' . $node->nid, array('absolute' => TRUE));
-  $linkIcon = '<img src="/' . drupal_get_path('module', 'linebutton') . '/linebutton_75x30_en.png" width="75" height="30" alt="LINE 分享" />';
+  $linkIcon = '<img src="/' . drupal_get_path('module', 'linebutton') . '/images/linebutton_78x20_en.png" width="78" height="20" alt="LINE it!" />';
   return array(
     'content' => array(
       '#markup' => l($linkIcon, $linkURL, array('html' => TRUE)),
