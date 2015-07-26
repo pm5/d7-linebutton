@@ -27,33 +27,3 @@ function linebutton_block_view($delta = '') {
     ),
   );
 }
-
-/**
- * Implements hook_block_save().
- */
-function linebutton_block_save($delta = '', $edit = array()) {
-}
-
-/**
- * Implements hook_block_configure().
- */
-function linebutton_block_configure($delta = '') {
-}
-
-/**
- * Implements hook_block_list_alter().
- */
-function linebutton_block_list_alter(&$blocks) {
-}
-
-/**
- * Implements hook_block_info_alter().
- */
-function linebutton_block_info_alter(&$blocks, $theme, $code_blocks) {
-}
-
-/**
- * Implements hook_block_view_alter().
- */
-function linebutton_block_view_alter(&$data, $block) {
-}
