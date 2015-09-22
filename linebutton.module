@@ -1,6 +1,92 @@
 <?php
 
 /**
+ * Implements hook_menu().
+ */
+function linebutton_menu() {
+  $items = array();
+  $items['admin/config/services/linebutton'] = array(
+    'title' => 'LINE it! button',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('linebutton_config_form'),
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+function linebutton_config_form($form, &$form_state)
+{
+    $form = array();
+
+    $path = '/' . drupal_get_path('module', 'linebutton') . '/images';
+
+    $form['#prefix'] = '<p>' . t('Select the LINE it! icon to use:') . '</p>';
+    $form['icon'] = array(
+      '78x20' => array(
+        '#prefix' => '<div>',
+        '#suffix' => '<label for="78x20"><img width="78" src="' . $path . '/linebutton_78x20_en.png"></img></label></div>',
+        '#id' => '78x20',
+        '#value' => '78x20',
+        '#type' => 'radio',
+      ),
+      '20x20' => array(
+        '#prefix' => '<div>',
+        '#suffix' => '<label for="20x20"><img width="20" src="' . $path . '/linebutton_20x20_en.png"></img></label></div>',
+        '#id' => '20x20',
+        '#value' => '20x20',
+        '#type' => 'radio',
+      ),
+      '30x30' => array(
+        '#prefix' => '<div>',
+        '#suffix' => '<label for="30x30"><img width="30" src="' . $path . '/linebutton_30x30_en.png"></img></label></div>',
+        '#id' => '30x30',
+        '#value' => '30x30',
+        '#type' => 'radio',
+      ),
+      '40x40' => array(
+        '#prefix' => '<div>',
+        '#suffix' => '<label for="40x40"><img width="40" src="' . $path . '/linebutton_40x40_en.png"></img></label></div>',
+        '#id' => '40x40',
+        '#value' => '40x40',
+        '#type' => 'radio',
+      ),
+      '36x60' => array(
+        '#prefix' => '<div>',
+        '#suffix' => '<label for="36x60"><img width="36" src="' . $path . '/linebutton_36x60_en.png"></img></label></div>',
+        '#id' => '36x60',
+        '#value' => '36x60',
+        '#type' => 'radio',
+      ),
+    );
+
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Submit'
+    );
+
+    return $form;
+}
+
+function linebutton_config_form_validate($form, &$form_state)
+{
+  $form_state['values']['icon'] = NULL;
+  foreach (_linebutton_icon_names() as $icon) {
+    if (array_key_exists($icon, $form_state['input']) && $form_state['input'][$icon] === 'on') {
+      $form_state['values']['icon'] = $icon;
+      break;
+    }
+  }
+}
+
+function linebutton_config_form_submit($form, &$form_state)
+{
+  variable_set('linebutton_icon', $form_state['values']['icon']);
+  drupal_set_message(t('Selected icon has been saved.'));
+}
+
+
+
+/**
  * Implements hook_block_info().
  */
 function linebutton_block_info() {
@@ -11,6 +97,19 @@ function linebutton_block_info() {
   return $blocks;
 }
 
+function _linebutton_icon_names()
+{
+  return array('78x20', '20x20', '30x30', '40x40', '36x60');
+}
+
+function _linebutton_icon_width($icon_name)
+{
+  if (array_search($icon_name, _linebutton_icon_names()) === FALSE) {
+    return FALSE;
+  }
+  return substr($icon_name, 0, 2);
+}
+
 /**
  * Implements hook_block_view().
  */
@@ -19,8 +118,9 @@ function linebutton_block_view($delta = '') {
   if (arg(0) !== 'node' || !is_numeric(arg(1))) { return array(); }
   $nid = arg(1);
   $node = node_load($nid);
+  $icon = variable_get('linebutton_icon', '78x20');
   $linkURL = 'http://line.me/R/msg/text/?' . $node->title . ' ' . url('node/' . $node->nid, array('absolute' => TRUE));
-  $linkIcon = '<img src="/' . drupal_get_path('module', 'linebutton') . '/images/linebutton_78x20_en.png" width="78" height="20" alt="LINE it!" />';
+  $linkIcon = '<img src="/' . drupal_get_path('module', 'linebutton') . '/images/linebutton_' . $icon . '_en.png" width="' . _linebutton_icon_width($icon) . '" alt="LINE it!" />';
   return array(
     'content' => array(
       '#markup' => l($linkIcon, $linkURL, array('html' => TRUE)),
