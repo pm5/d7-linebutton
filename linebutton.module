@@ -22,41 +22,15 @@ function linebutton_config_form($form, &$form_state)
 
     $form['#prefix'] = '<p>' . t('Select the LINE it! icon to use:') . '</p>';
     $form['icon'] = array(
-      '78x20' => array(
-        '#prefix' => '<div>',
-        '#suffix' => '<label for="78x20"><img width="78" src="' . $path . '/linebutton_78x20_en.png"></img></label></div>',
-        '#id' => '78x20',
-        '#value' => '78x20',
-        '#type' => 'radio',
+      '#type' => 'radios',
+      '#options' => array(
+        '78x20' => '<label for="78x20"><img width="78" src="' . $path . '/linebutton_78x20_en.png"></img></label>',
+        '20x20' => '<label for="20x20"><img width="20" src="' . $path . '/linebutton_20x20_en.png"></img></label>',
+        '30x30' => '<label for="30x30"><img width="30" src="' . $path . '/linebutton_30x30_en.png"></img></label>',
+        '40x40' => '<label for="40x40"><img width="40" src="' . $path . '/linebutton_40x40_en.png"></img></label>',
+        '36x60' => '<label for="36x60"><img width="36" src="' . $path . '/linebutton_36x60_en.png"></img></label>',
       ),
-      '20x20' => array(
-        '#prefix' => '<div>',
-        '#suffix' => '<label for="20x20"><img width="20" src="' . $path . '/linebutton_20x20_en.png"></img></label></div>',
-        '#id' => '20x20',
-        '#value' => '20x20',
-        '#type' => 'radio',
-      ),
-      '30x30' => array(
-        '#prefix' => '<div>',
-        '#suffix' => '<label for="30x30"><img width="30" src="' . $path . '/linebutton_30x30_en.png"></img></label></div>',
-        '#id' => '30x30',
-        '#value' => '30x30',
-        '#type' => 'radio',
-      ),
-      '40x40' => array(
-        '#prefix' => '<div>',
-        '#suffix' => '<label for="40x40"><img width="40" src="' . $path . '/linebutton_40x40_en.png"></img></label></div>',
-        '#id' => '40x40',
-        '#value' => '40x40',
-        '#type' => 'radio',
-      ),
-      '36x60' => array(
-        '#prefix' => '<div>',
-        '#suffix' => '<label for="36x60"><img width="36" src="' . $path . '/linebutton_36x60_en.png"></img></label></div>',
-        '#id' => '36x60',
-        '#value' => '36x60',
-        '#type' => 'radio',
-      ),
+      '#default_value' => variable_get('linebutton_icon', '78x20')
     );
 
     $form['submit'] = array(
@@ -69,12 +43,8 @@ function linebutton_config_form($form, &$form_state)
 
 function linebutton_config_form_validate($form, &$form_state)
 {
-  $form_state['values']['icon'] = NULL;
-  foreach (_linebutton_icon_names() as $icon) {
-    if (array_key_exists($icon, $form_state['input']) && $form_state['input'][$icon] === 'on') {
-      $form_state['values']['icon'] = $icon;
-      break;
-    }
+  if (array_search($form_state['values']['icon'], _linebutton_icon_names()) === FALSE) {
+    form_set_error('icon', t('Invalid icon selection.'));
   }
 }
 
